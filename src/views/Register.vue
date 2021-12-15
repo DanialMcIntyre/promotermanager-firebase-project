@@ -15,10 +15,12 @@ import firebase from 'firebase';
 import {ref} from 'vue'
 
 export default {
+  
   setup() {
+
+    //Register with email and pass
     const email = ref("");
     const password = ref("");
-
     const Register = () => {
       firebase.auth()
         .createUserWithEmailAndPassword(email.value, password.value)

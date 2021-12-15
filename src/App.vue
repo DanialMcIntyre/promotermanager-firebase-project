@@ -9,10 +9,12 @@ import { useRouter, useRoute} from 'vue-router';
 import firebase from 'firebase';
 
 export default {
-  setup() {
-    const router = useRouter();
-    const route = useRoute();
 
+  setup() {
+
+    //Send user back to login page if not logged in, and back to home page when trying to go back to login
+    const router = useRouter();
+    const route = useRoute()
     onBeforeMount(() =>  {
       firebase.auth().onAuthStateChanged((user) => {
         if(!user) {
@@ -22,7 +24,7 @@ export default {
         }
       });
     });
-
+    
   }  
 }
 
