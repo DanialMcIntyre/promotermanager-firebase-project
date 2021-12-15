@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>This is an about page</h1>
+    <h1>Events</h1>
+    <p><router-link to="/events/createevent">Create an event</router-link></p>
+    <p><router-link to="/events/viewevents">View events</router-link></p>
     <p><router-link to="/">Home</router-link></p>
   </div>
 </template>
@@ -26,6 +28,7 @@ export default {
         }
       });
     });
+
   }
 }
 </script>

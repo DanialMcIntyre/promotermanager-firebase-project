@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div>
       <h1>Forgot Password</h1>
         <form @submit.prevent>
         <div>

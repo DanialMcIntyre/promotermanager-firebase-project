@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>This is an about page</h1>
-    <p><router-link to="/">Home</router-link></p>
+    <h1>Create new guest</h1>
+    <p><router-link to="/guests">Back</router-link></p>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default {
         }
       });
     });
+
   }
 }
 </script>

@@ -9,7 +9,8 @@ const firebaseConfig = {
   projectId: "fir-promotermanager",
   storageBucket: "fir-promotermanager.appspot.com",
   messagingSenderId: "22000139722",
-  appId: "1:22000139722:web:4ae5c0d4593ac982ac6333"
+  appId: "1:22000139722:web:4ae5c0d4593ac982ac6333",
+  databaseURL: "https://fir-promotermanager-default-rtdb.firebaseio.com/"
 };
 
 // Initialize Firebase

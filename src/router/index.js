@@ -15,22 +15,52 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/authentication/Login.vue')
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/authentication/Register.vue')
   },
   {
     path: '/passwordreset',
     name: 'PasswordReset',
-    component: () => import('../views/PasswordReset.vue')
+    component: () => import('../views/authentication/PasswordReset.vue')
   },
   {
     path: '/passwordforgot',
     name: 'PasswordForgot',
-    component: () => import('../views/PasswordForgot.vue')
+    component: () => import('../views/authentication/PasswordForgot.vue')
+  },
+  {
+    path: '/guests',
+    name: 'Guests',
+    component: () => import('../views/guests/Guests.vue')
+  },
+  {
+    path: '/guests/createguest',
+    name: 'CreateGuest',
+    component: () => import('../views/guests/CreateGuest.vue')
+  },
+  {
+    path: '/guests/viewguests',
+    name: 'ViewGuests',
+    component: () => import('../views/guests/ViewGuests.vue')
+  },
+  {
+    path: '/events',
+    name: 'Events',
+    component: () => import('../views/events/Events.vue')
+  },
+  {
+    path: '/events/createevent',
+    name: 'CreateEvent',
+    component: () => import('../views/events/CreateEvent.vue')
+  },
+  {
+    path: '/events/viewevents',
+    name: 'ViewEvents',
+    component: () => import('../views/events/ViewEvents.vue')
   }
 ]
 

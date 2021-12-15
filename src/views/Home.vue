@@ -1,7 +1,11 @@
 <template>
-  <div class="home">
+  <div>
     <h1>Welcome, {{name}}</h1>
     <router-link to="/about">About</router-link>
+    <br/> <br/>
+    <router-link to="/guests">Guests</router-link>
+    <br/> <br/>
+    <router-link to="/events">Events</router-link>
     <br/>
     <p><router-link to="/passwordreset">Reset Password</router-link></p>
     <button class="logout" @click="Logout">Logout</button>

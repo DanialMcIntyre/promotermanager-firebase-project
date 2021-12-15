@@ -2,9 +2,9 @@
   <div class="login">
     <h1>Login</h1>
     <form @submit.prevent="Login">
-      <input type="text" placeholder="Email" v-model="email" />
-      <input type="password" placeholder="Password" v-model="password" />
-      <input type="submit" placeholder="Login" />
+      <input type="text" placeholder="Email" v-model="email" /> <br/>
+      <input type="password" placeholder="Password" v-model="password" /> <br/> <br/>
+      <input type="submit" value="Login" />
       <p><router-link to="/passwordforgot">Forgot Password?</router-link></p>
       <button @click="googleSignIn">Login with Google</button>
       <button @click="facebookSignIn">Login with Facebook</button>
