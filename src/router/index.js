@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/authentication/Register.vue')
   },
   {
+    path: '/phonenumber',
+    name: 'PhoneNumber',
+    component: () => import('../views/authentication/PhoneNumber.vue')
+  },
+  {
     path: '/passwordreset',
     name: 'PasswordReset',
     component: () => import('../views/authentication/PasswordReset.vue')

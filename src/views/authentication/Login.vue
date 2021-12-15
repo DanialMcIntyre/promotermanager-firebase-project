@@ -8,6 +8,7 @@
       <p><router-link to="/passwordforgot">Forgot Password?</router-link></p>
       <button @click="googleSignIn">Login with Google</button>
       <button @click="facebookSignIn">Login with Facebook</button>
+      <p><router-link to="/phonenumber">Login with Phone number</router-link></p>
       <p><router-link to="/register">Sign up</router-link></p>
     </form>
   </div>
