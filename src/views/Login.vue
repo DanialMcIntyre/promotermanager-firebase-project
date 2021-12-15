@@ -7,6 +7,7 @@
       <input type="submit" placeholder="Login" />
       <br /><br />
       <button @click="googleSignIn">Login with Google</button>
+      <button @click="facebookSignIn">Login with Facebook</button>
       <p><router-link to="/register">Sign up</router-link></p>
     </form>
   </div>
@@ -53,6 +54,18 @@ export default {
           console.log(err);
         });
     },
+    facebookSignIn: function () {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(() => {
+          alert("Signed in!");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
 };
 </script>

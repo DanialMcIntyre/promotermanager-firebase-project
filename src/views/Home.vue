@@ -3,6 +3,7 @@
     <h1>Welcome, {{name}}</h1>
     <router-link to="/about">About</router-link>
     <br/>
+    <p><router-link to="/passwordreset">Reset Password</router-link></p>
     <button class="logout" @click="Logout">Logout</button>
   </div>
 </template>
