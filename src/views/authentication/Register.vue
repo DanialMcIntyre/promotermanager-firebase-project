@@ -24,8 +24,8 @@ export default {
     const Register = () => {
       firebase.auth()
         .createUserWithEmailAndPassword(email.value, password.value)
-        .then(user => {
-          alert(user);
+        .then(() => {
+          
         })
         .catch(err => alert(err.message));
     }
