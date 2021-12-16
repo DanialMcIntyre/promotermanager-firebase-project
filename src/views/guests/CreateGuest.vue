@@ -59,11 +59,9 @@ export default {
       //Checks if all fields have values
       if (guest.firstname != '' && guest.lastname != '' && guest.email != '' && guest.phonenumber != '') {
 
-        //Adds guest object to db
-        db.collection('guests').add(guest).then(() => {
-          alert(guest.firstname + " " + guest.lastname + " has been added!")
-          document.getElementById("newguest").reset();
-        })
+        db.collection('users').doc('user1').collection('guests').add(guest)
+        alert(guest.firstname + " " + guest.lastname + " has been added!")
+        document.getElementById("newguest").reset();
 
       } else {
         alert("Please fill out the form!")

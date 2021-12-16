@@ -1,16 +1,44 @@
 <template>
   <div>
     <h1>View guests</h1>
-    <p><router-link to="/guests">Back</router-link></p>
+    <p><router-link to="/guests">Back</router-link></p> <br/>
+
+    <table style="margin-left:auto; margin-right:auto; width: 1000px;">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+      </tr>
+
+      <tr v-for="guest in guests" v-bind:key="guest">
+        <td> {{guest.firstname}}</td>
+        <td> {{guest.lastname}}</td>
+        <td> {{guest.email}}</td>
+        <td> {{guest.phonenumber}}</td>
+      </tr>
+
+    </table>
+
   </div>
+
+
+
 </template>
 
 <script>
 import {useRouter, useRoute} from 'vue-router';
 import {onBeforeMount} from 'vue';
 import firebase from 'firebase';
+import db from '../../main';
 
 export default {
+
+  data() {
+    return {
+      guests: []
+    }
+  },
 
   setup() {
 
@@ -27,6 +55,17 @@ export default {
       });
     });
 
+  },
+
+  //Gets data from database
+  created() {
+    db.collection("users").doc('user1').collection('guests').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        //Puts data into guest object
+        this.guests.push(doc.data())
+      });
+    });
   }
+
 }
 </script>
