@@ -59,7 +59,9 @@ export default {
       //Checks if all fields have values
       if (guest.firstname != '' && guest.lastname != '' && guest.email != '' && guest.phonenumber != '') {
 
-        db.collection('users').doc('user1').collection('guests').add(guest)
+        const user = firebase.auth().currentUser;
+
+        db.collection('users').doc(user.email).collection('guests').add(guest)
         alert(guest.firstname + " " + guest.lastname + " has been added!")
         document.getElementById("newguest").reset();
 

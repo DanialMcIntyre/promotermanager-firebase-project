@@ -59,7 +59,10 @@ export default {
 
   //Gets data from database
   created() {
-    db.collection("users").doc('user1').collection('guests').get().then((querySnapshot) => {
+
+    const user = firebase.auth().currentUser;
+
+    db.collection("users").doc(user.email).collection('guests').get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         //Puts data into guest object
         this.guests.push(doc.data())

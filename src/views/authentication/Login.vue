@@ -17,6 +17,7 @@
 <script>
 import { ref } from "vue";
 import firebase from "firebase";
+import db from '../../main';
 
 export default {
 
@@ -48,7 +49,15 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(() => {
+        .then((result) => {
+
+          //Create event and guest collection in database when account is created
+          const email = result.user.email;
+          
+          db.collection('users').doc(email).set({});
+          db.collection('users').doc(email).collection('guests').doc('temp').set({});
+          db.collection('users').doc(email).collection('events').doc('temp').set({});
+
           alert("Signed in!");
         })
         .catch((err) => {
@@ -60,7 +69,15 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(() => {
+        .then((result) => {
+
+          //Create event and guest collection in database when account is created
+          const email = result.user.email;
+          
+          db.collection('users').doc(email).set({});
+          db.collection('users').doc(email).collection('guests').doc('temp').set({});
+          db.collection('users').doc(email).collection('events').doc('temp').set({});
+
           alert("Signed in!");
         })
         .catch((err) => {
