@@ -1,6 +1,24 @@
 <template>
   <div>
     <h1>View Events</h1>
+
+    <table style="margin-left:auto; margin-right:auto; width: 1000px;">
+      <tr>
+        <th>Event Name</th>
+        <th>Venue</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+
+      <tr v-for="event in events" v-bind:key="event">
+        <td> {{event.eventname}}</td>
+        <td> {{event.venue}}</td>
+        <td> {{event.date}}</td>
+        <td> {{event.time}}</td>
+      </tr>
+
+    </table>
+
     <p><router-link to="/events">Back</router-link></p>
   </div>
 </template>
@@ -9,8 +27,15 @@
 import {useRouter, useRoute} from 'vue-router';
 import {onBeforeMount} from 'vue';
 import firebase from 'firebase';
+import db from '../../main';
 
 export default {
+
+  data() {
+    return {
+      events: []
+    }
+  },
 
   setup() {
 
@@ -27,6 +52,20 @@ export default {
       });
     });
 
+  },
+
+  //Gets data from database
+  created() {
+
+    const user = firebase.auth().currentUser;
+
+    db.collection("users").doc(user.email).collection('events').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        //Puts data into guest object
+        this.events.push(doc.data())
+      });
+    });
   }
+
 }
 </script>

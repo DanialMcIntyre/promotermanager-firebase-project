@@ -6,7 +6,7 @@
         <input type="text" placeholder="Email" v-model="email" required/> <br/>
         <input type="password" placeholder="Password" v-model="password" required/> <br/>
         <input type="password" placeholder="Confirm Password" v-model="confirmpassword" required/> <br/>
-        <input type="tel" placeholder="Phone Number (optional)" v-model="phonenumber"/> <br/>
+        <input type="tel" placeholder="Phone Number (optional)" v-model="phonenumber"/> <br/> <br/>
         <input type="submit" placeholder="Register"/>
         <p><router-link to="/login">Sign in</router-link></p>
       </form>
