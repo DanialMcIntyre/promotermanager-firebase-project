@@ -36,7 +36,7 @@ export default {
           .then(() => {
 
             //Create event and guest collection in database when account is created
-            db.collection('users').doc(email.value).set({username: username.value});
+            db.collection('users').doc(email.value).set({username: username.value, phonenumber: phonenumber.value});
             db.collection('users').doc(email.value).collection('guests').doc('temp').set({});
             db.collection('users').doc(email.value).collection('events').doc('temp').set({});
               

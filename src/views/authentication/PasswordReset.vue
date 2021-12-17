@@ -2,7 +2,7 @@
   <div>
       <h1>Reset Password</h1>
       <button @click="resetPassword">Send Reset Password Email</button>
-      <p><router-link to="/">Home</router-link></p>
+      <p><router-link to="/profile">Back</router-link></p>
   </div>
 </template>
 

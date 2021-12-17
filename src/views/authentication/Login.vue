@@ -54,7 +54,7 @@ export default {
           //Create event and guest collection in database when account is created
           const email = result.user.email;
           
-          db.collection('users').doc(email).set({username: email});
+          db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
           db.collection('users').doc(email).collection('guests').doc('temp').set({});
           db.collection('users').doc(email).collection('events').doc('temp').set({});
 
@@ -74,7 +74,7 @@ export default {
           //Create event and guest collection in database when account is created
           const email = result.user.email;
           
-          db.collection('users').doc(email).set({username: email});
+          db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
           db.collection('users').doc(email).collection('guests').doc('temp').set({});
           db.collection('users').doc(email).collection('events').doc('temp').set({});
 
