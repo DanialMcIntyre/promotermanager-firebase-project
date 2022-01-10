@@ -11,10 +11,10 @@
       </tr>
 
       <tr v-for="event in events" v-bind:key="event">
-        <td> {{event.eventname}}</td>
-        <td> {{event.venue}}</td>
-        <td> {{event.date}}</td>
-        <td> {{event.time}}</td>
+        <td><router-link :to="{ name: 'Event', params: { eventdetails: 'eventdetails', name: event.eventname, venue: event.venue, date: event.date, time: event.time} }">{{event.eventname}}</router-link></td>
+        <td>{{event.venue}}</td>
+        <td>{{event.date}}</td>
+        <td>{{event.time}}</td>
       </tr>
 
     </table>
@@ -57,9 +57,7 @@ export default {
   //Gets data from database
   created() {
 
-    const user = firebase.auth().currentUser;
-
-    db.collection("users").doc(user.email).collection('events').get().then((querySnapshot) => {
+    db.collection("users").doc(firebase.auth().currentUser.email).collection('events').get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         //Puts data into guest object
         this.events.push(doc.data())

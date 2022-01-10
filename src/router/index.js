@@ -71,6 +71,11 @@ const routes = [
     path: '/events/viewevents',
     name: 'ViewEvents',
     component: () => import('../views/events/ViewEvents.vue')
+  },
+  {
+    path: '/events/viewevents/:eventdetails',
+    name: 'Event',
+    component: () => import('../views/events/Event.vue')
   }
 ]
 
