@@ -62,7 +62,6 @@ export default {
         const user = firebase.auth().currentUser;
 
         db.collection('users').doc(user.email).collection('events').add(event);
-        db.collection('users').doc(user.email).collection('events').doc('temp').delete();
         alert("Your event titled '" + event.eventname + "' has been created")
         document.getElementById("newevent").reset();
 

@@ -55,8 +55,6 @@ export default {
           const email = result.user.email;
           
           db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
-          db.collection('users').doc(email).collection('guests').doc('temp').set({});
-          db.collection('users').doc(email).collection('events').doc('temp').set({});
 
           alert("Signed in!");
         })
@@ -75,8 +73,6 @@ export default {
           const email = result.user.email;
           
           db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
-          db.collection('users').doc(email).collection('guests').doc('temp').set({});
-          db.collection('users').doc(email).collection('events').doc('temp').set({});
 
           alert("Signed in!");
         })

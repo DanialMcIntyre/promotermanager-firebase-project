@@ -62,7 +62,6 @@ export default {
         const user = firebase.auth().currentUser;
 
         db.collection('users').doc(user.email).collection('guests').add(guest);
-        db.collection('users').doc(user.email).collection('guests').doc('temp').delete();
         alert(guest.firstname + " " + guest.lastname + " has been added!")
         document.getElementById("newguest").reset();
 
