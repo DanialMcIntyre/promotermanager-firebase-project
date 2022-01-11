@@ -3,6 +3,8 @@
     <h1>View guests</h1>
     <p><router-link to="/guests">Back</router-link></p> <br/>
 
+    <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
+
     <table style="margin-left:auto; margin-right:auto; width: 1000px;">
       <tr>
         <th>First Name</th>
@@ -11,7 +13,7 @@
         <th>Phone Number</th>
       </tr>
 
-      <tr v-for="guest in guests" v-bind:key="guest">
+      <tr v-for="guest in filteredGuests" v-bind:key="guest">
         <td> {{guest.firstname}}</td>
         <td> {{guest.lastname}}</td>
         <td> {{guest.email}}</td>
@@ -21,8 +23,6 @@
     </table>
 
   </div>
-
-
 
 </template>
 
@@ -36,7 +36,8 @@ export default {
 
   data() {
     return {
-      guests: []
+      guests: [],
+      search: ''
     }
   },
 
@@ -62,14 +63,23 @@ export default {
 
     firebase.auth().onAuthStateChanged(user => {
 
-      db.collection("users").doc(user.email).collection('guests').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+      db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
           //Puts data into guest object
           this.guests.push(doc.data())
         });
       });
-      
+
     });
+  },
+
+  //Filter guests by searchbar
+  computed: {
+    filteredGuests: function() {
+      return this.guests.filter((guest) => {
+        return guest.firstname.match(this.search) || guest.lastname.match(this.search) || guest.phonenumber.match(this.search) || guest.email.match(this.search);
+      });
+    }
   }
 
 }

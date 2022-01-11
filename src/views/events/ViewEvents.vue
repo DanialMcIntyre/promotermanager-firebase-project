@@ -2,6 +2,8 @@
   <div>
     <h1>View Events</h1>
 
+    <input type="text" v-model="search" placeholder="Search Events"/> <br/><br/>
+
     <table style="margin-left:auto; margin-right:auto; width: 1000px;">
       <tr>
         <th>Event Name</th>
@@ -10,8 +12,8 @@
         <th>Time</th>
       </tr>
 
-      <tr v-for="event in events" v-bind:key="event">
-        <td><router-link :to="{ name: 'Event', params: { eventdetails: 'eventdetails', name: event.eventname, venue: event.venue, date: event.date, time: event.time} }">{{event.eventname}}</router-link></td>
+      <tr v-for="event in filteredEvents" v-bind:key="event">
+        <td><router-link :to="{ name: 'Event', params: { eventdetails: event.eventname, name: event.eventname, venue: event.venue, date: event.date, time: event.time} }">{{event.eventname}}</router-link></td>
         <td>{{event.venue}}</td>
         <td>{{event.date}}</td>
         <td>{{event.time}}</td>
@@ -33,7 +35,8 @@ export default {
 
   data() {
     return {
-      events: []
+      events: [],
+      search: ''
     }
   },
 
@@ -67,6 +70,15 @@ export default {
       });
 
     });
+  },
+
+  //Filter events by searchbar
+  computed: {
+    filteredEvents: function() {
+      return this.events.filter((event) => {
+        return event.eventname.match(this.search) || event.venue.match(this.search) || event.date.match(this.search) || event.time.match(this.search);
+      });
+    }
   }
 
 }
