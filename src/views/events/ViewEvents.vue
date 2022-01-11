@@ -56,12 +56,16 @@ export default {
 
   //Gets data from database
   created() {
+    
+    firebase.auth().onAuthStateChanged(user => {
 
-    db.collection("users").doc(firebase.auth().currentUser.email).collection('events').get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        //Puts data into guest object
-        this.events.push(doc.data())
+      db.collection("users").doc(user.email).collection('events').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          //Puts data into guest object
+          this.events.push(doc.data())
+        });
       });
+
     });
   }
 

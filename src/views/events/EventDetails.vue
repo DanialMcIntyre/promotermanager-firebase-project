@@ -38,6 +38,9 @@ export default {
         } else if (route.path == "/login" || route.path == "/register") {
           router.replace('/');
         }
+        if (this.name == undefined) {
+          console.log(this.name.type);
+        }
       });
     });
 

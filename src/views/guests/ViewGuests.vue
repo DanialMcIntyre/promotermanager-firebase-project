@@ -60,13 +60,15 @@ export default {
   //Gets data from database
   created() {
 
-    const user = firebase.auth().currentUser;
+    firebase.auth().onAuthStateChanged(user => {
 
-    db.collection("users").doc(user.email).collection('guests').get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        //Puts data into guest object
-        this.guests.push(doc.data())
+      db.collection("users").doc(user.email).collection('guests').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          //Puts data into guest object
+          this.guests.push(doc.data())
+        });
       });
+      
     });
   }
 

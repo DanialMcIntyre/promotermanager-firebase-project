@@ -47,20 +47,22 @@ export default {
   //Gets username and phonenumber from database
   created() {
 
-    const user = firebase.auth().currentUser;
+    firebase.auth().onAuthStateChanged(user => {
 
-    db.collection("users").doc(user.email).get().then(doc => {
-      this.username = doc.data().username;
-      this.phonenumber = doc.data().phonenumber;
-      document.getElementById("username").placeholder = this.username;
-      document.getElementById("phonenumber").placeholder = this.phonenumber;
-      if (doc.data().phonenumber == "" || doc.data().phonenumber == null) {
-        this.phonenumber = 'None';
-      } else {
+      db.collection("users").doc(user.email).get().then(doc => {
+        this.username = doc.data().username;
         this.phonenumber = doc.data().phonenumber;
-      }
-    }).catch(err => {
-        console.log('Error getting document', err);
+        document.getElementById("username").placeholder = this.username;
+        document.getElementById("phonenumber").placeholder = this.phonenumber;
+        if (doc.data().phonenumber == "" || doc.data().phonenumber == null) {
+          this.phonenumber = 'None';
+        } else {
+          this.phonenumber = doc.data().phonenumber;
+        }
+      }).catch(err => {
+          console.log('Error getting document', err);
+      });
+      
     });
 
   },

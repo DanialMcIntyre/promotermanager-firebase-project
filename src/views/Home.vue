@@ -33,16 +33,19 @@ export default {
     //Display username
     const name = ref("");
     onBeforeMount(() => {
-      const user = firebase.auth().currentUser;
-      if (user) {
-        db.collection("users") .doc(user.email).get()
-          .then((doc) => {
-            name.value = doc.data().username;
-          })
-          .catch((err) => {
-            console.log("Error getting document", err);
-          });
-      }
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          db.collection("users").doc(user.email).get()
+            .then((doc) => {
+              name.value = doc.data().username;
+            })
+            .catch((err) => {
+              console.log("Error getting document", err);
+            });
+        } else {
+          console.log(user.email);
+        }
+      });
     });
 
     //Logout
@@ -54,7 +57,7 @@ export default {
 
     return {
       Logout,
-      name,
+      name
     };
   },
 };
