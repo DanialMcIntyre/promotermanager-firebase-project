@@ -5,7 +5,7 @@
 
     <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
 
-    <table style="margin-left:auto; margin-right:auto; width: 1000px;" id="table">
+    <table style="margin-left:auto; margin-right:auto; width: 1000px;">
       <tr>
         <th>First Name <button @click="sortByName" id="first" disabled>Sort</button></th>
         <th>Last Name <button @click="sortByLastName" id="last">Sort</button></th>
