@@ -18,6 +18,7 @@
         <td> {{guest.lastname}}</td>
         <td> {{guest.email}}</td>
         <td> {{guest.phonenumber}}</td>
+        <td> <button @click="deleteGuest(guest.firstname, guest.lastname, guest.email, guest.phonenumber)">Delete Guest</button></td>
       </tr>
 
     </table>
@@ -36,13 +37,7 @@ export default {
 
   data() {
     return {
-      guests: [{
-        firstname: 'John',
-        lastname: 'Hilbert',
-        email: 'johnhilbert@gmail.com',
-        phonenumber: '5555555555'
-      }
-      ],
+      guests: [],
       search: '',
       sortType: 'firstName'
     }
@@ -125,7 +120,6 @@ export default {
       document.getElementById("email").disabled = false;
       document.getElementById("number").disabled = true;
     },
-
     sortArray() {
       //Sorts the array
       if(this.sortType == "firstName") {
@@ -137,6 +131,31 @@ export default {
       } else if (this.sortType == "phonenumber") {
         this.guests.sort((a,b) => (a.phonenumber > b.phonenumber) ? 1 : ((b.phonenumber > a.phonenumber) ? -1 : 0))
       }
+    },
+
+    //Deletes event
+    deleteGuest(firstname, lastname, email, phonenumber) {
+
+      firebase.auth().onAuthStateChanged(user => {
+
+        var confirm = prompt("Are you sure you want to delete the guest " + firstname + " " + lastname + "? You will NOT be able to undo this action! Type 'YES' to confirm");
+        if (confirm == "YES") {
+          //Gets document ID to delete it
+          db.collection("users").doc(user.email).collection("guests").where('firstname', '==', firstname).where('lastname', '==', lastname).where('email', '==', email).where('phonenumber', '==', phonenumber).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              db.collection("users").doc(user.email).collection("guests").doc(doc.id).delete().then(() => {
+                alert("The guest " + firstname + " " + lastname + " has been deleted." + doc.id);
+                window.location.reload();
+              }).catch((error) => {
+                console.error("Error removing document: ", error);
+              });
+
+            });
+          })
+        } else {
+          alert("You have cancelled deletion");
+        }
+      });
     }
 
   },

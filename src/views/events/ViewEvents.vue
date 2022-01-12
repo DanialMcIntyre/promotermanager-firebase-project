@@ -17,6 +17,7 @@
         <td>{{event.venue}}</td>
         <td>{{event.date}}</td>
         <td>{{event.time}}</td>
+        <td><button @click="deleteEvent(event.eventname)">Delete Event</button></td>
       </tr>
 
     </table>
@@ -67,11 +68,9 @@ export default {
         querySnapshot.forEach((doc) => {
           //Puts data into event object
           this.events.push(doc.data())
-
           this.sortArray();
         });
       });
-
     });
   },
 
@@ -84,8 +83,7 @@ export default {
     }
   },
 
-methods: {
-
+  methods: {
     sortByName() {
       this.sortType = "name";
       this.sortArray();
@@ -118,7 +116,6 @@ methods: {
       document.getElementById("date").disabled = false;
       document.getElementById("time").disabled = true;
     },
-
     sortArray() {
       //Sorts the array
       if(this.sortType == "name") {
@@ -130,9 +127,32 @@ methods: {
       } else if (this.sortType == "time") {
         this.events.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0))
       }
+    },
+
+    //Deletes event
+    deleteEvent(name) {
+
+      firebase.auth().onAuthStateChanged(user => {
+
+        var confirm = prompt("Are you sure you want to delete the event titled " + name + "? You will NOT be able to undo this action! Type 'YES' to confirm");
+        if (confirm == "YES") {
+          //Gets document ID to delete it
+          db.collection("users").doc(user.email).collection("events").where('eventname', '==', name).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              db.collection("users").doc(user.email).collection("events").doc(doc.id).delete().then(() => {
+                alert("The event titled " + name + " has been deleted.");
+                window.location.reload();
+              }).catch((error) => {
+                console.error("Error removing document: ", error);
+              });
+            });
+          })
+        } else {
+          alert("You have cancelled deletion");
+        }
+      });
     }
-
   }
-
 }
+
 </script>
