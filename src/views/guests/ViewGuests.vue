@@ -1,16 +1,28 @@
 <template>
   <div>
     <h1>View guests</h1>
-    <p><router-link to="/guests">Back</router-link></p> <br/>
+    <p><router-link to="/guests">Back</router-link></p>
 
     <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
 
+    <select @change="changeSortType" id="dropdownSortType">
+      <option selected="selected" disabled>Select an option</option>
+      <option value="firstnameasc">First Name - Ascending</option>
+      <option value="firstnamedes">First Name - Descending</option>
+      <option value="lastnameasc">Last Name - Ascending</option>
+      <option value="lastnamedes">Last Name - Descending</option>
+      <option value="emailasc">Email - Ascending</option>
+      <option value="emaildes">Email - Descending</option>
+      <option value="phonenumberasc">Phonenumber - Ascending</option>
+      <option value="phonenumberdes">Phonenumber - Descending</option>
+    </select> <br/><br/>
+
     <table style="margin-left:auto; margin-right:auto; width: 1000px;">
       <tr>
-        <th>First Name <button @click="sortByName" id="first" disabled>Sort</button></th>
-        <th>Last Name <button @click="sortByLastName" id="last">Sort</button></th>
-        <th>Email <button @click="sortByEmail" id="email">Sort</button></th>
-        <th>Phone Number <button @click="sortByPhonenumber" id="number">Sort</button></th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
       </tr>
 
       <tr v-for="guest in filteredGuests" v-bind:key="guest">
@@ -39,7 +51,7 @@ export default {
     return {
       guests: [],
       search: '',
-      sortType: 'firstName'
+      sortType: ''
     }
   },
 
@@ -69,9 +81,6 @@ export default {
         snapshot.docs.forEach(doc => {
           //Puts data into guest object
           this.guests.push(doc.data())
-
-          this.sortArray();
-
         });
       });
     });
@@ -88,48 +97,26 @@ export default {
 
   methods: {
 
-    sortByName() {
-      this.sortType = "firstName";
-      this.sortArray();
-      document.getElementById("first").disabled = true;
-      document.getElementById("last").disabled = false;
-      document.getElementById("email").disabled = false;
-      document.getElementById("number").disabled = false;
-    },
-    sortByLastName() {
-      this.sortType = "lastName";
-      this.sortArray();
-      document.getElementById("first").disabled = false;
-      document.getElementById("last").disabled = true;
-      document.getElementById("email").disabled = false;
-      document.getElementById("number").disabled = false;
-    },
-    sortByEmail() {
-      this.sortType = "email";
-      this.sortArray();
-      document.getElementById("first").disabled = false;
-      document.getElementById("last").disabled = false;
-      document.getElementById("email").disabled = true;
-      document.getElementById("number").disabled = false;
-    },
-    sortByPhonenumber() {
-      this.sortType = "phonenumber";
-      this.sortArray();
-      document.getElementById("first").disabled = false;
-      document.getElementById("last").disabled = false;
-      document.getElementById("email").disabled = false;
-      document.getElementById("number").disabled = true;
-    },
-    sortArray() {
-      //Sorts the array
-      if(this.sortType == "firstName") {
+    //Changes sort type when user uses dropdown menu
+    changeSortType() {  
+      this.sortType = document.getElementById("dropdownSortType").value;
+
+      if(this.sortType == "firstnameasc") {
         this.guests.sort((a,b) => (a.firstname > b.firstname) ? 1 : ((b.firstname > a.firstname) ? -1 : 0))
-      } else if (this.sortType == "lastName") {
+      } else if (this.sortType == "firstnamedes"){
+        this.guests.sort((a,b) => (a.firstname < b.firstname) ? 1 : ((b.firstname < a.firstname) ? -1 : 0))
+      } else if (this.sortType == "lastnameasc") {
         this.guests.sort((a,b) => (a.lastname > b.lastname) ? 1 : ((b.lastname > a.lastname) ? -1 : 0))
-      } else if (this.sortType == "email") {
+      } else if (this.sortType == "lastnamedes") {
+        this.guests.sort((a,b) => (a.lastname < b.lastname) ? 1 : ((b.lastname < a.lastname) ? -1 : 0))
+      } else if (this.sortType == "emailasc") {
         this.guests.sort((a,b) => (a.email > b.email) ? 1 : ((b.email > a.email) ? -1 : 0))
-      } else if (this.sortType == "phonenumber") {
+      } else if(this.sortType == "emaildes") {
+        this.guests.sort((a,b) => (a.email < b.email) ? 1 : ((b.email < a.email) ? -1 : 0))
+      } else if (this.sortType == "phonenumberasc") {
         this.guests.sort((a,b) => (a.phonenumber > b.phonenumber) ? 1 : ((b.phonenumber > a.phonenumber) ? -1 : 0))
+      } else if (this.sortType == "phonenumberdes") {
+        this.guests.sort((a,b) => (a.phonenumber < b.phonenumber) ? 1 : ((b.phonenumber < a.phonenumber) ? -1 : 0))
       }
     },
 

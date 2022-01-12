@@ -2,14 +2,28 @@
   <div>
     <h1>View Events</h1>
 
+    <p><router-link to="/events">Back</router-link></p>
+
     <input type="text" v-model="search" placeholder="Search Events"/> <br/><br/>
+
+    <select @change="changeSortType" id="dropdownSortType">
+      <option selected="selected" disabled>Select an option</option>
+      <option value="eventnameasc">Event Name - Ascending</option>
+      <option value="eventnamedes">Event Name - Descending</option>
+      <option value="venueasc">Venue - Ascending</option>
+      <option value="venuedes">Venue - Descending</option>
+      <option value="dateasc">Date - Ascending</option>
+      <option value="datedes">Date - Descending</option>
+      <option value="timeasc">Time - Ascending</option>
+      <option value="timedes">Time - Descending</option>
+    </select> <br/><br/>
 
     <table style="margin-left:auto; margin-right:auto; width: 1000px;">
       <tr>
-        <th>Event Name <button @click="sortByName" id="name" disabled>Sort</button></th>
-        <th>Venue <button @click="sortByVenue" id="venue">Sort</button></th>
-        <th>Date <button @click="sortByDate" id="date">Sort</button></th>
-        <th>Time <button @click="sortByTime" id="time">Sort</button></th>
+        <th>Event Name</th>
+        <th>Venue</th>
+        <th>Date</th>
+        <th>Time</th>
       </tr>
 
       <tr v-for="event in filteredEvents" v-bind:key="event">
@@ -22,7 +36,6 @@
 
     </table>
 
-    <p><router-link to="/events">Back</router-link></p>
   </div>
 </template>
 
@@ -38,7 +51,7 @@ export default {
     return {
       events: [],
       search: '',
-      sortType: 'name'
+      sortType: ''
     }
   },
 
@@ -68,7 +81,6 @@ export default {
         querySnapshot.forEach((doc) => {
           //Puts data into event object
           this.events.push(doc.data())
-          this.sortArray();
         });
       });
     });
@@ -84,48 +96,27 @@ export default {
   },
 
   methods: {
-    sortByName() {
-      this.sortType = "name";
-      this.sortArray();
-      document.getElementById("name").disabled = true;
-      document.getElementById("venue").disabled = false;
-      document.getElementById("date").disabled = false;
-      document.getElementById("time").disabled = false;
-    },
-    sortByVenue() {
-      this.sortType = "venue";
-      this.sortArray();
-      document.getElementById("name").disabled = false;
-      document.getElementById("venue").disabled = true;
-      document.getElementById("date").disabled = false;
-      document.getElementById("time").disabled = false;
-    },
-    sortByDate() {
-      this.sortType = "date";
-      this.sortArray();
-      document.getElementById("name").disabled = false;
-      document.getElementById("venue").disabled = false;
-      document.getElementById("date").disabled = true;
-      document.getElementById("time").disabled = false;
-    },
-    sortByTime() {
-      this.sortType = "time";
-      this.sortArray();
-      document.getElementById("name").disabled = false;
-      document.getElementById("venue").disabled = false;
-      document.getElementById("date").disabled = false;
-      document.getElementById("time").disabled = true;
-    },
-    sortArray() {
-      //Sorts the array
-      if(this.sortType == "name") {
+    
+    //Changes sort type when user uses dropdown menu
+    changeSortType() {
+      this.sortType = document.getElementById("dropdownSortType").value;
+
+      if(this.sortType == "eventnameasc") {
         this.events.sort((a,b) => (a.eventname > b.eventname) ? 1 : ((b.eventname > a.eventname) ? -1 : 0))
-      } else if (this.sortType == "venue") {
+      } else if (this.sortType == "eventnamedes") {
+        this.events.sort((a,b) => (a.eventname < b.eventname) ? 1 : ((b.eventname < a.eventname) ? -1 : 0))
+      } else if (this.sortType == "venueasc") {
         this.events.sort((a,b) => (a.venue > b.venue) ? 1 : ((b.venue > a.venue) ? -1 : 0))
-      } else if (this.sortType == "date") {
+      } else if (this.sortType == "venuedes") {
+        this.events.sort((a,b) => (a.venue < b.venue) ? 1 : ((b.venue < a.venue) ? -1 : 0))
+      } else if (this.sortType == "dateasc") {
         this.events.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
-      } else if (this.sortType == "time") {
+      } else if (this.sortType == "datedes") {
+        this.events.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0))
+      } else if (this.sortType == "timeasc") {
         this.events.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0))
+      } else if (this.sortType == "timedes") {
+        this.events.sort((a,b) => (a.time < b.time) ? 1 : ((b.time < a.time) ? -1 : 0))
       }
     },
 
