@@ -41,7 +41,8 @@ export default {
       eventname: '',
       venue: '',
       date: '',
-      time: ''
+      time: '',
+      desc: ''
     }
   },
   methods: {
@@ -53,7 +54,8 @@ export default {
         eventname: document.getElementById("eventname").value,
         venue: document.getElementById("venue").value,
         date: document.getElementById("date").value,
-        time: document.getElementById("time").value
+        time: document.getElementById("time").value,
+        desc: 'Add a description to your event!'
       }
 
       //Checks if all fields have values

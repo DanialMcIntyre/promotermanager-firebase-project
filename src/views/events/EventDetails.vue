@@ -11,6 +11,9 @@
     <p1>At <input type="text" id="time" onfocus="(this.type='time')" onblur="(this.type='text')"></p1>
     <button @click="changeTime">Change Time</button> <br/><br/>
 
+    <textarea rows="5" maxlength="250" id="desc" style="resize: none; width: 30%; height: 75px; overflow:hidden"></textarea>
+    <br/><button @click="changeDesc">Update Description</button> <br/><br/>
+
     <p><router-link to="/events/viewevents">Back</router-link></p>
   </div>
 </template>
@@ -30,7 +33,8 @@ export default {
       name: this.$route.params.name,
       venue: this.$route.params.venue,
       date: this.$route.params.date,
-      time: this.$route.params.time
+      time: this.$route.params.time,
+      desc: this.$route.params.desc
     }
   },
   created() {
@@ -45,6 +49,7 @@ export default {
             document.getElementById("venue").placeholder = doc.data().venue;
             document.getElementById("date").placeholder = doc.data().date;
             document.getElementById("time").placeholder = doc.data().time;
+            document.getElementById("desc").placeholder = doc.data().desc;
           })
         });
       }).catch(err => {
@@ -112,6 +117,20 @@ export default {
           time: document.getElementById("time").value
         })
         alert("The time has been changed to " + document.getElementById("time").value);
+      }
+
+    },
+
+    //Change description
+    changeDesc: function () {
+      if (document.getElementById("desc").value.trim() != "") {
+
+        const user = firebase.auth().currentUser;
+
+        db.collection('users').doc(user.email).collection("events").doc(docID).update({
+          desc: document.getElementById("desc").value
+        })
+        alert("The description has successfully been changed");
       }
 
     },
