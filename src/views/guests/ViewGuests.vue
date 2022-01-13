@@ -6,7 +6,7 @@
     <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
 
     <select @change="changeSortType" id="dropdownSortType">
-      <option selected="selected" disabled>Select an option</option>
+      <option selected="selected" disabled>Select sorting type</option>
       <option value="firstnameasc">First Name - Ascending</option>
       <option value="firstnamedes">First Name - Descending</option>
       <option value="lastnameasc">Last Name - Ascending</option>
@@ -120,7 +120,7 @@ export default {
       }
     },
 
-    //Deletes event
+    //Deletes guest
     deleteGuest(firstname, lastname, email, phonenumber) {
 
       firebase.auth().onAuthStateChanged(user => {

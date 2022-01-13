@@ -7,7 +7,7 @@
     <input type="text" v-model="search" placeholder="Search Events"/> <br/><br/>
 
     <select @change="changeSortType" id="dropdownSortType">
-      <option selected="selected" disabled>Select an option</option>
+      <option selected="selected" disabled>Select sorting type</option>
       <option value="eventnameasc">Event Name - Ascending</option>
       <option value="eventnamedes">Event Name - Descending</option>
       <option value="venueasc">Venue - Ascending</option>
