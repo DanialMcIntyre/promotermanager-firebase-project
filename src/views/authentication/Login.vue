@@ -53,6 +53,7 @@ export default {
 
           //Create event and guest collection in database when account is created
           const email = result.user.email;
+          //result.user.sendEmailVerification();
           
           db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
 

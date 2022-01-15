@@ -54,8 +54,7 @@
         <td> {{currentguest.email}}</td>
         <td> {{currentguest.phonenumber}}</td>
         <td> <button @click="deleteGuest(currentguest.firstname, currentguest.lastname, currentguest.email, currentguest.phonenumber)">Delete Guest</button></td>
-     
-        </tr>
+      </tr>
 
     </table>
 
@@ -270,27 +269,25 @@ export default {
 
     //Deletes event
     deleteGuest(firstname, lastname, email, phonenumber) {
+      const user = firebase.auth().currentUser;
 
-      firebase.auth().onAuthStateChanged(user => {
-
-        var confirm = prompt("Are you sure you want to delete the guest " + firstname + " " + lastname + "? You will NOT be able to undo this action! Type 'YES' to confirm");
-        if (confirm == "YES") {
-          //Gets document ID to delete it
-          db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').where('firstname', '==', firstname).where('lastname', '==', lastname).where('email', '==', email).where('phonenumber', '==', phonenumber).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').doc(doc.id).delete().then(() => {
-                alert("The guest " + firstname + " " + lastname + " has been deleted." + doc.id);
-              }).catch((error) => {
-                console.error("Error removing document: ", error);
-              });
-
+      var confirm = prompt("Are you sure you want to delete the guest " + firstname + " " + lastname + "? You will NOT be able to undo this action! Type 'YES' to confirm");
+      if (confirm == "YES") {
+        //Gets document ID to delete it
+        db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').where('firstname', '==', firstname).where('lastname', '==', lastname).where('email', '==', email).where('phonenumber', '==', phonenumber).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').doc(doc.id).delete().then(() => {
+              alert("The guest " + firstname + " " + lastname + " has been deleted." + doc.id);
+            }).catch((error) => {
+              console.error("Error removing document: ", error);
             });
-          })
-        } else {
-          alert("You have cancelled deletion");
-        }
-      });
-    }
+
+          });
+        })
+      } else {
+        alert("You have cancelled deletion");
+      }
+  }
 
   }
 

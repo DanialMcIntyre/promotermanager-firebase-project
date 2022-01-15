@@ -122,26 +122,24 @@ export default {
 
     //Deletes event
     deleteEvent(name) {
+      const user = firebase.auth().currentUser;
 
-      firebase.auth().onAuthStateChanged(user => {
-
-        var confirm = prompt("Are you sure you want to delete the event titled " + name + "? You will NOT be able to undo this action! Type 'YES' to confirm");
-        if (confirm == "YES") {
-          //Gets document ID to delete it
-          db.collection("users").doc(user.email).collection("events").where('eventname', '==', name).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              db.collection("users").doc(user.email).collection("events").doc(doc.id).delete().then(() => {
-                alert("The event titled " + name + " has been deleted.");
-                window.location.reload();
-              }).catch((error) => {
-                console.error("Error removing document: ", error);
-              });
+      var confirm = prompt("Are you sure you want to delete the event titled " + name + "? You will NOT be able to undo this action! Type 'YES' to confirm");
+      if (confirm == "YES") {
+        //Gets document ID to delete it
+        db.collection("users").doc(user.email).collection("events").where('eventname', '==', name).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            db.collection("users").doc(user.email).collection("events").doc(doc.id).delete().then(() => {
+              alert("The event titled " + name + " has been deleted.");
+              window.location.reload();
+            }).catch((error) => {
+              console.error("Error removing document: ", error);
             });
-          })
-        } else {
-          alert("You have cancelled deletion");
-        }
-      });
+          });
+        })
+      } else {
+        alert("You have cancelled deletion");
+      }
     }
   }
 }
