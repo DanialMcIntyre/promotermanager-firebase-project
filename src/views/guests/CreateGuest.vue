@@ -41,9 +41,23 @@ export default {
       firstname: '',
       lastname: '',
       email: '',
-      phonenumber: ''
+      phonenumber: '',
+      guests: []
     }
   },
+  created() {
+    //Puts all current events in array
+    firebase.auth().onAuthStateChanged(user => {
+      db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          //Puts data into guest object
+          this.guests.push(doc.data())
+        });
+      });
+      
+    });
+  },
+
   methods: {
 
     submit() {
@@ -58,12 +72,24 @@ export default {
 
       //Checks if all fields have values
       if (guest.firstname != '' && guest.lastname != '' && guest.email != '' && guest.phonenumber != '') {
+        var guestExists = false;
 
-        const user = firebase.auth().currentUser;
+        //Checks if guest with the same name fields already exists
+        for (const element of this.guests) {
+          if(element.firstname == guest.firstname && element.lastname == guest.lastname && element.email == guest.email && element.phonenumber == guest.phonenumber) {
+            guestExists = true;
+            alert("A guest with these fields already exists.")
+          }
+        }
 
-        db.collection('users').doc(user.email).collection('guests').add(guest);
-        alert(guest.firstname + " " + guest.lastname + " has been added!")
-        document.getElementById("newguest").reset();
+        if(guestExists == false) {
+          const user = firebase.auth().currentUser;
+
+          db.collection('users').doc(user.email).collection('guests').add(guest);
+          alert(guest.firstname + " " + guest.lastname + " has been added!")
+          document.getElementById("newguest").reset();
+        }
+
 
       } else {
         alert("Please fill out the form!")

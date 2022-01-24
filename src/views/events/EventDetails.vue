@@ -219,12 +219,26 @@ export default {
         document.getElementById("myDropdown").classList.toggle("show");
     },
 
+    //Add guest to event
     selectFilteredValue: function(guest) {
-        //document.getElementById("search_input").value = event.target.getAttribute("data-value");
         const user = firebase.auth().currentUser;
+        var userExists = false;
+
+        //Checks if user is already part of event
+        for (const element of this.currentguests) {
+          if (guest.firstname == element.firstname && guest.lastname == element.lastname && guest.phonenumber == element.phonenumber && guest.email == element.email) {
+            userExists = true;
+            alert("This user is already added to the event!")
+          }
+        }
+
+      //Adds user to event
+      if(userExists == false) {
         db.collection('users').doc(user.email).collection('events').doc(docID).collection('guests').add(guest);
         alert(guest.firstname + " " + guest.lastname + " has been added to this event!");
         this.closeSearchDropdown();
+      }
+
     },
 
     filterSearchDropdown: function() {
@@ -277,7 +291,7 @@ export default {
         db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').where('firstname', '==', firstname).where('lastname', '==', lastname).where('email', '==', email).where('phonenumber', '==', phonenumber).get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').doc(doc.id).delete().then(() => {
-              alert("The guest " + firstname + " " + lastname + " has been deleted." + doc.id);
+              alert("The guest " + firstname + " " + lastname + " has been deleted.");
             }).catch((error) => {
               console.error("Error removing document: ", error);
             });
