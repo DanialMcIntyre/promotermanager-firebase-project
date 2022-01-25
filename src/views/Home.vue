@@ -19,15 +19,18 @@ export default {
 
   setup() {
     
-    //Send user back to login if not logged in
     const router = useRouter();
     const route = useRoute();
     onBeforeMount(() => {
       firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
-          router.replace("/login");
+          router.replace("/login"); //Send user to login page if not logged in
+        } else if (!user.emailVerified) {
+          router.replace('/verifyaccount') //Send user to verification page if not verified
         } else if (route.path == "/login" || route.path == "/register") {
-          router.replace("/");
+          router.replace("/"); //Send user to home if attempting to go to login page
+        } else if (route.path != "/") {
+          router.replace("/") //Change url to home if url does not exist
         }
       });
     });

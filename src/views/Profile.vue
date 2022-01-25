@@ -1,13 +1,9 @@
 <template>
   <div>
     <h1>Profile</h1>
-    <p1>Username: </p1>
-    <input type="text" id="username">
-    <button @click="changeUsername">Change Username</button>
-    <br/>
-    <p1>Phone number: </p1>
-    <input type="tel" id="phonenumber">
-    <button @click="changePhonenumber">Change Phone number</button>
+    <p>Email: {{email}}</p>
+    <p>Username: <input type="text" id="username"> <button @click="changeUsername">Change Username</button></p>
+    <p>Phone number: <input type="number" id="phonenumber"> <button @click="changePhonenumber">Change Phone number</button></p>
     <p><router-link to="/passwordreset">Reset Password</router-link></p>
     <p><router-link to="/">Home</router-link></p>
   </div>
@@ -30,6 +26,8 @@ export default {
       firebase.auth().onAuthStateChanged((user) => {
         if(!user) {
           router.replace('/login');
+        } else if (!user.emailVerified) {
+          router.replace('verifyaccount')
         } else if (route.path == "/login" || route.path == "/register") {
           router.replace('/');
         }
@@ -40,7 +38,8 @@ export default {
   data() {
     return {
       username: '',
-      phonenumber: ''
+      phonenumber: '',
+      email: firebase.auth().currentUser.email
     }
   },
 
@@ -50,15 +49,15 @@ export default {
     firebase.auth().onAuthStateChanged(user => {
 
       db.collection("users").doc(user.email).get().then(doc => {
-        this.username = doc.data().username;
-        this.phonenumber = doc.data().phonenumber;
-        document.getElementById("username").placeholder = this.username;
-        document.getElementById("phonenumber").placeholder = this.phonenumber;
         if (doc.data().phonenumber == "" || doc.data().phonenumber == null) {
           this.phonenumber = 'None';
+          alert("yoo")
         } else {
           this.phonenumber = doc.data().phonenumber;
         }
+        this.username = doc.data().username;
+        document.getElementById("username").placeholder = this.username;
+        document.getElementById("phonenumber").placeholder = this.phonenumber;
       }).catch(err => {
           console.log('Error getting document', err);
       });
