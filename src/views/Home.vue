@@ -47,8 +47,6 @@ export default {
             .catch((err) => {
               console.log("Error getting document", err);
             });
-        } else {
-          console.log(user.email);
         }
       });
     });

@@ -27,7 +27,7 @@
       </tr>
 
       <tr v-for="event in filteredEvents" v-bind:key="event">
-        <td><router-link :to="{ name: 'Event', params: { eventdetails: event.eventname, name: event.eventname, venue: event.venue, date: event.date, time: event.time} }">{{event.eventname}}</router-link></td>
+        <td><router-link :to="{ name: 'Event', params: { eventdetails: event.eventname} }">{{event.eventname}}</router-link></td>
         <td>{{event.venue}}</td>
         <td>{{event.date}}</td>
         <td>{{event.time}}</td>

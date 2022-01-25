@@ -2,14 +2,11 @@
   <div>
     <h1>{{ name }}</h1>
 
-    <p1>This event will take place at <input type="text" id="venue"> </p1>
-    <button @click="changeVenue">Change Venue</button> <br/><br/>
+    <p>This event will take place at <input type="text" id="venue"> <button @click="changeVenue">Change Venue</button></p>
 
-    <p1>On <input type="text" id="date" onfocus="(this.type='date')" onblur="(this.type='text')"></p1>
-    <button @click="changeDate">Change Date</button> <br/><br/>
+    <p>On <input type="text" id="date" onfocus="(this.type='date')" onblur="(this.type='text')"> <button @click="changeDate">Change Date</button></p>
 
-    <p1>At <input type="text" id="time" onfocus="(this.type='time')" onblur="(this.type='text')"></p1>
-    <button @click="changeTime">Change Time</button> <br/><br/>
+    <p>At <input type="text" id="time" onfocus="(this.type='time')" onblur="(this.type='text')"> <button @click="changeTime">Change Time</button></p>
 
     <textarea rows="5" maxlength="250" id="desc" style="resize: none; width: 30%; height: 75px; overflow:hidden"></textarea>
     <br/><button @click="changeDesc">Update Description</button> <br/><br/>
@@ -75,11 +72,7 @@ export default {
 
   data () {
     return {
-      name: this.$route.params.name,
-      venue: this.$route.params.venue,
-      date: this.$route.params.date,
-      time: this.$route.params.time,
-      desc: this.$route.params.desc,
+      name: this.$route.params.eventdetails,
       guests: [],
       currentguests: [],
       search: '',

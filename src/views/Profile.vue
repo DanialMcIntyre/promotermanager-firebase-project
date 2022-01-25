@@ -1,10 +1,11 @@
 <template>
   <div>
     <h1>Profile</h1>
-    <p>Email: {{email}}</p>
+    <p>Email: <span id="email"> </span></p>
     <p>Username: <input type="text" id="username"> <button @click="changeUsername">Change Username</button></p>
     <p>Phone number: <input type="number" id="phonenumber"> <button @click="changePhonenumber">Change Phone number</button></p>
     <p><router-link to="/passwordreset">Reset Password</router-link></p>
+    <p><button @click="deleteAccount">Delete Account</button></p>
     <p><router-link to="/">Home</router-link></p>
   </div>
 </template>
@@ -33,14 +34,13 @@ export default {
         }
       });
     });
-  },
 
-  data() {
     return {
       username: '',
       phonenumber: '',
-      email: firebase.auth().currentUser.email
+      email: ''
     }
+
   },
 
   //Gets username and phonenumber from database
@@ -51,17 +51,17 @@ export default {
       db.collection("users").doc(user.email).get().then(doc => {
         if (doc.data().phonenumber == "" || doc.data().phonenumber == null) {
           this.phonenumber = 'None';
-          alert("yoo")
         } else {
           this.phonenumber = doc.data().phonenumber;
         }
         this.username = doc.data().username;
+        this.email = user.email;
         document.getElementById("username").placeholder = this.username;
         document.getElementById("phonenumber").placeholder = this.phonenumber;
+        document.getElementById("email").innerHTML = this.email;
       }).catch(err => {
           console.log('Error getting document', err);
       });
-      
     });
 
   },
@@ -94,7 +94,35 @@ export default {
         })
         alert("Your phone number has been changed to " + document.getElementById("phonenumber").value);
       }
-    }    
+    },
+    
+    //Delete account
+    deleteAccount: function() {
+
+      const user = firebase.auth().currentUser;
+
+      var confirm = prompt("Are you sure you want to delete your account. You will not be able to undo this action! Type 'YES' to proceed");
+
+      if (confirm == 'YES') {
+
+        db.collection("users").doc(user.email).delete().then(() => {
+          console.log("Database deleted");
+        }).catch((error) => {
+          console.error("Error removing document: ", error);
+        });
+
+        user.delete().then(() => {
+          alert("Your account has been deleted!");
+        }).catch((error) => {
+          console.log(error);
+        });
+      
+      } else {
+        alert("Your account has not been deleted!");
+      }
+
+    }
+    
   }
 }
 </script>
