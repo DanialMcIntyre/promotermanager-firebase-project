@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/about',
@@ -16,6 +15,11 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Profile.vue')
+  },  
+  {
+    path: '/verifyaccount',
+    name: 'VerifyAccount',
+    component: () => import('../views/authentication/VerifyAccount.vue')
   },
   {
     path: '/login',
@@ -76,6 +80,11 @@ const routes = [
     path: '/events/viewevents/:eventdetails',
     name: 'Event',
     component: () => import('../views/events/EventDetails.vue')
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'Home',
+    component: () => import('../views/Home.vue')
   }
 ]
 

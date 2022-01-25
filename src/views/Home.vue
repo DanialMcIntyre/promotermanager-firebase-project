@@ -16,7 +16,9 @@ import firebase from "firebase";
 import db from "../main";
 
 export default {
+
   setup() {
+    
     //Send user back to login if not logged in
     const router = useRouter();
     const route = useRoute();

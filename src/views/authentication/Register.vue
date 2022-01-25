@@ -35,6 +35,9 @@ export default {
           .createUserWithEmailAndPassword(email.value, password.value)
           .then(() => {
 
+            const user = firebase.auth().currentUser;
+            user.sendEmailVerification();
+
             //Create event and guest collection in database when account is created
             db.collection('users').doc(email.value).set({username: username.value, phonenumber: phonenumber.value});
               
