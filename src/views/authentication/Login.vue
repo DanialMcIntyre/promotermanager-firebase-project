@@ -37,7 +37,7 @@ export default {
     return {
       Login,
       email,
-      password,
+      password
     };
   },
   
@@ -50,14 +50,9 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-
-          //Create event and guest collection in database when account is created
+          //Created username and phonenumber fields in database
           const email = result.user.email;
-          //result.user.sendEmailVerification();
-          
           db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
-
-          alert("Signed in!");
         })
         .catch((err) => {
           console.log(err);
@@ -69,19 +64,15 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-
-          //Create event and guest collection in database when account is created
+          //Created username and phonenumber fields in database
           const email = result.user.email;
-          
           db.collection('users').doc(email).set({username: email, phonenumber: 'None'});
-
-          alert("Signed in!");
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  },
+  }
 };
 </script>
 

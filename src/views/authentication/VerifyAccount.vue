@@ -46,6 +46,7 @@ export default {
     sendVerification() {
       const user = firebase.auth().currentUser;
       user.sendEmailVerification();
+      alert("Email verification sent!");
     }
   }
 }

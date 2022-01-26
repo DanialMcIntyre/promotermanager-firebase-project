@@ -1,23 +1,21 @@
 <template>
-  <div>
-      <h1>Forgot Password</h1>
-        <form @submit.prevent>
-        <div>
-          <label for="email">Email: </label>
-          <input type="email" placeholder="joe@bloggs.com" v-model="email" id="email" required/>
-        </div>
-        <br/>
-        <div>
-          <button type="submit" @click="sendEmail">
-            <transition name="fade" mode="out-in">
-              <span v-if="!emailSending">Send</span>
-              <span v-else>Sending...</span>
-            </transition>
-          </button>
-        </div>
-      </form>
-      <p><router-link to="/login">Log in</router-link></p>
-  </div>
+  <h1>Forgot Password</h1>
+    <form @submit.prevent>
+      <div>
+        <label for="email">Email: </label>
+        <input type="email" placeholder="joe@bloggs.com" v-model="email" id="email" required/>
+      </div>
+      <br/>
+      <div>
+        <button type="submit" @click="sendEmail">
+          <transition name="fade" mode="out-in">
+            <span v-if="!emailSending">Send</span>
+            <span v-else>Sending...</span>
+          </transition>
+        </button>
+      </div>
+    </form>
+    <p><router-link to="/login">Log in</router-link></p>
 </template>
 
 <script>
@@ -38,7 +36,6 @@ export default {
         }
       });
     });
-
   },
 
   data() {
@@ -48,7 +45,7 @@ export default {
       emailSending: false,
     };
   },
-  
+
   methods: {
 
     sendEmail() {
@@ -63,6 +60,7 @@ export default {
         .sendPasswordResetEmail(this.email)
         .then(() => {
           this.emailSending = false;
+          alert("Password reset email sent!")
         })
         .catch((error) => {
           alert(error);

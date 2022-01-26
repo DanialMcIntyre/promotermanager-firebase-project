@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Welcome, {{name}} </h1>
+    <h1 style="font-size: 300%;">Promoter Manager</h1>
+    <h2>Welcome, {{name}} </h2>
     <router-link to="/about">About</router-link> <br/> <br/>
     <router-link to="/guests">Guests</router-link> <br/> <br/>
     <router-link to="/events">Events</router-link> <br/>

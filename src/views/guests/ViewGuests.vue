@@ -2,7 +2,6 @@
   <div>
     <h1>View guests</h1>
     <p><router-link to="/guests">Back</router-link></p>
-
     <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
 
     <select @change="changeSortType" id="dropdownSortType">
@@ -32,11 +31,8 @@
         <td> {{guest.phonenumber}}</td>
         <td> <button @click="deleteGuest(guest.firstname, guest.lastname, guest.email, guest.phonenumber)">Delete Guest</button></td>
       </tr>
-
     </table>
-
   </div>
-
 </template>
 
 <script>
@@ -46,14 +42,6 @@ import firebase from 'firebase';
 import db from '../../main';
 
 export default {
-
-  data() {
-    return {
-      guests: [],
-      search: '',
-      sortType: ''
-    }
-  },
 
   setup() {
 
@@ -71,17 +59,21 @@ export default {
         }
       });
     });
+  },
 
+  data() {
+    return {
+      guests: [],
+      search: '',
+      sortType: ''
+    }
   },
 
   //Gets data from database
   created() {
-
     firebase.auth().onAuthStateChanged(user => {
-
       db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
-          //Puts data into guest object
           this.guests.push(doc.data())
         });
       });
@@ -125,7 +117,6 @@ export default {
     //Deletes guest
     deleteGuest(firstname, lastname, email, phonenumber) {
       const user = firebase.auth().currentUser;
-
       var confirm = prompt("Are you sure you want to delete the guest " + firstname + " " + lastname + "? You will NOT be able to undo this action! Type 'YES' to confirm");
       if (confirm == "YES") {
         //Gets document ID to delete it
@@ -137,15 +128,12 @@ export default {
             }).catch((error) => {
               console.error("Error removing document: ", error);
             });
-
           });
         })
       } else {
         alert("You have cancelled deletion");
       }
     }
-
-  },
-
+  }
 }
 </script>

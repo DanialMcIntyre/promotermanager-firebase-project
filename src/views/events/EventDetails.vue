@@ -3,26 +3,22 @@
     <h1>{{ name }}</h1>
 
     <p>This event will take place at <input type="text" id="venue"> <button @click="changeVenue">Change Venue</button></p>
-
     <p>On <input type="text" id="date" onfocus="(this.type='date')" onblur="(this.type='text')"> <button @click="changeDate">Change Date</button></p>
-
     <p>At <input type="text" id="time" onfocus="(this.type='time')" onblur="(this.type='text')"> <button @click="changeTime">Change Time</button></p>
-
     <textarea rows="5" maxlength="250" id="desc" style="resize: none; width: 30%; height: 75px; overflow:hidden"></textarea>
     <br/><button @click="changeDesc">Update Description</button> <br/><br/>
 
     <div class="dropdown">
-        <button @click="openSearchDropdown" id="search_input" style="width: 250px;">Add Guest</button>
-        <div id="myDropdown" class="dropdown-content" style="width: 250px;">
-            <input type="text" placeholder="Search.." id="search_value" @keyup="filterSearchDropdown" class="search-area" style="width: 250px;"/>
-            <div v-for="guest in guests" v-bind:key="guest">
-              <span data-value="{{guest}}" @click="selectFilteredValue(guest)">{{guest.firstname + " " + guest.lastname}}</span>
-            </div>
+      <button @click="openSearchDropdown" id="search_input" style="width: 250px;">Add Guest</button>
+      <div id="myDropdown" class="dropdown-content" style="width: 250px;">
+        <input type="text" placeholder="Search.." id="search_value" @keyup="filterSearchDropdown" class="search-area" style="width: 250px;"/>
+        <div v-for="guest in guests" v-bind:key="guest">
+          <span data-value="{{guest}}" @click="selectFilteredValue(guest)">{{guest.firstname + " " + guest.lastname}}</span>
         </div>
+      </div>
     </div>
 
     <h2>Event Guest List</h2>
-
     <input type="text" v-model="search" placeholder="Search Guests"/> <br/><br/>
 
     <select @change="changeSortType" id="dropdownSortType">
@@ -52,9 +48,7 @@
         <td> {{currentguest.phonenumber}}</td>
         <td> <button @click="deleteGuest(currentguest.firstname, currentguest.lastname, currentguest.email, currentguest.phonenumber)">Delete Guest</button></td>
       </tr>
-
     </table>
-
 
     <p><router-link to="/events/viewevents">Back</router-link></p>
   </div>
@@ -69,55 +63,6 @@ import db from '../../main';
 var docID;
 
 export default {
-
-  data () {
-    return {
-      name: this.$route.params.eventdetails,
-      guests: [],
-      currentguests: [],
-      search: '',
-      sortType: ''
-    }
-  },
-  created() {
-
-    firebase.auth().onAuthStateChanged(user => {
-
-      //Gets document ID from database
-      db.collection("users").doc(user.email).collection("events").where('eventname', '==', this.name).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          docID = doc.id;
-          db.collection("users").doc(user.email).collection("events").doc(docID).get().then(doc => {
-            document.getElementById("venue").placeholder = doc.data().venue;
-            document.getElementById("date").placeholder = doc.data().date;
-            document.getElementById("time").placeholder = doc.data().time;
-            document.getElementById("desc").placeholder = doc.data().desc;
-
-            //Get current guests
-            db.collection("users").doc(user.email).collection('events').doc(docID).collection('guests').get().then((snapshot) => {
-              snapshot.docs.forEach(doc => {
-                //Puts data into guest object
-                this.currentguests.push(doc.data())
-              });
-            });
-
-          })
-        });
-      }).catch(err => {
-        console.log('Error getting document', err);
-      });
-
-      //Get total guests
-      db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-          //Puts data into guest object
-          this.guests.push(doc.data())
-        });
-      });
-
-    });
-
-  },
 
   setup() {
 
@@ -135,7 +80,52 @@ export default {
         }
       });
     });
+  },
 
+  data () {
+    return {
+      name: this.$route.params.eventdetails,
+      guests: [],
+      currentguests: [],
+      search: '',
+      sortType: ''
+    }
+  },
+
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+
+      //Gets document ID from database
+      db.collection("users").doc(user.email).collection("events").where('eventname', '==', this.name).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          docID = doc.id;
+
+          //Gets all necessary fields from database
+          db.collection("users").doc(user.email).collection("events").doc(docID).get().then(doc => {
+            document.getElementById("venue").placeholder = doc.data().venue;
+            document.getElementById("date").placeholder = doc.data().date;
+            document.getElementById("time").placeholder = doc.data().time;
+            document.getElementById("desc").placeholder = doc.data().desc;
+
+            //Get current guests
+            db.collection("users").doc(user.email).collection('events').doc(docID).collection('guests').get().then((snapshot) => {
+              snapshot.docs.forEach(doc => {
+                this.currentguests.push(doc.data())
+              });
+            });
+          })
+        });
+      }).catch(err => {
+        console.log('Error getting document', err);
+      });
+
+      //Get all guests
+      db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          this.guests.push(doc.data())
+        });
+      });
+    });
   },
 
   //Filter guests by searchbar
@@ -152,57 +142,45 @@ export default {
     //Change venue
     changeVenue: function () {
       if (document.getElementById("venue").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).collection("events").doc(docID).update({
           venue: document.getElementById("venue").value
         })
         alert("The venue has been changed to " + document.getElementById("venue").value);
       }
-
     },
 
     //Change date
     changeDate: function () {
       if (document.getElementById("date").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).collection("events").doc(docID).update({
           date: document.getElementById("date").value
         })
         alert("The date has been changed to " + document.getElementById("date").value);
       }
-
     },
 
     //Change time
     changeTime: function () {
       if (document.getElementById("time").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).collection("events").doc(docID).update({
           time: document.getElementById("time").value
         })
         alert("The time has been changed to " + document.getElementById("time").value);
       }
-
     },
 
     //Change description
     changeDesc: function () {
       if (document.getElementById("desc").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).collection("events").doc(docID).update({
           desc: document.getElementById("desc").value
         })
         alert("The description has successfully been changed");
       }
-
     },
 
     //All dropdown search box stuff VVVVVV
@@ -234,9 +212,7 @@ export default {
           this.closeSearchDropdown();
           window.location.reload();
         });
-
       }
-
     },
 
     filterSearchDropdown: function() {
@@ -282,7 +258,6 @@ export default {
     //Deletes event
     deleteGuest(firstname, lastname, email, phonenumber) {
       const user = firebase.auth().currentUser;
-
       var confirm = prompt("Are you sure you want to delete the guest " + firstname + " " + lastname + "? You will NOT be able to undo this action! Type 'YES' to confirm");
       if (confirm == "YES") {
         //Gets document ID to delete it
@@ -294,16 +269,13 @@ export default {
             }).catch((error) => {
               console.error("Error removing document: ", error);
             });
-
           });
         })
       } else {
         alert("You have cancelled deletion");
       }
     }
-
   }
-
 }
 </script>
 

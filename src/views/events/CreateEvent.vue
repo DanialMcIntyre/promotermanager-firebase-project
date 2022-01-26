@@ -38,6 +38,7 @@ export default {
     });
 
   },
+
   data() {
     return {
       eventname: '',
@@ -48,16 +49,15 @@ export default {
       events: []
     }
   },
+
   created() {
     //Puts all current events in array
     firebase.auth().onAuthStateChanged(user => {
       db.collection("users").doc(user.email).collection('events').get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
-          //Puts data into guest object
           this.events.push(doc.data())
         });
       });
-      
     });
   },
 
@@ -89,12 +89,10 @@ export default {
         //Creates the event
         if(eventExists == false) {
           const user = firebase.auth().currentUser;
-
           db.collection('users').doc(user.email).collection('events').add(event);
           alert("Your event titled '" + event.eventname + "' has been created")
           document.getElementById("newevent").reset();
         }
-
       } else {
         alert("Please fill out the form!")
       }

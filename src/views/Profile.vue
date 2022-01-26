@@ -35,19 +35,19 @@ export default {
       });
     });
 
+  },
+
+  data() {
     return {
       username: '',
       phonenumber: '',
       email: ''
     }
-
   },
 
   //Gets username and phonenumber from database
   created() {
-
     firebase.auth().onAuthStateChanged(user => {
-
       db.collection("users").doc(user.email).get().then(doc => {
         if (doc.data().phonenumber == "" || doc.data().phonenumber == null) {
           this.phonenumber = 'None';
@@ -63,7 +63,6 @@ export default {
           console.log('Error getting document', err);
       });
     });
-
   },
 
   methods: {
@@ -71,24 +70,18 @@ export default {
     //Change username
     changeUsername: function () {
       if (document.getElementById("username").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).update({
           username: document.getElementById("username").value
         })
         alert("Your username has been changed to " + document.getElementById("username").value);
       }
-
     },
     
     //Change phonenumber
     changePhonenumber: function () {
-
       if (document.getElementById("phonenumber").value.trim() != "") {
-
         const user = firebase.auth().currentUser;
-
         db.collection('users').doc(user.email).update({
           phonenumber: document.getElementById("phonenumber").value
         })
@@ -98,13 +91,9 @@ export default {
     
     //Delete account
     deleteAccount: function() {
-
       const user = firebase.auth().currentUser;
-
       var confirm = prompt("Are you sure you want to delete your account. You will not be able to undo this action! Type 'YES' to proceed");
-
       if (confirm == 'YES') {
-
         db.collection("users").doc(user.email).delete().then(() => {
           console.log("Database deleted");
         }).catch((error) => {
@@ -120,9 +109,8 @@ export default {
       } else {
         alert("Your account has not been deleted!");
       }
-
     }
-    
+  
   }
 }
 </script>

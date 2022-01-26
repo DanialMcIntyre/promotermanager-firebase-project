@@ -1,9 +1,7 @@
 <template>
   <div>
     <h1>View Events</h1>
-
     <p><router-link to="/events">Back</router-link></p>
-
     <input type="text" v-model="search" placeholder="Search Events"/> <br/><br/>
 
     <select @change="changeSortType" id="dropdownSortType">
@@ -33,9 +31,7 @@
         <td>{{event.time}}</td>
         <td><button @click="deleteEvent(event.eventname)">Delete Event</button></td>
       </tr>
-
     </table>
-
   </div>
 </template>
 
@@ -46,14 +42,6 @@ import firebase from 'firebase';
 import db from '../../main';
 
 export default {
-
-  data() {
-    return {
-      events: [],
-      search: '',
-      sortType: ''
-    }
-  },
 
   setup() {
 
@@ -74,14 +62,19 @@ export default {
 
   },
 
+  data() {
+    return {
+      events: [],
+      search: '',
+      sortType: ''
+    }
+  },
+
   //Gets data from database
   created() {
-    
     firebase.auth().onAuthStateChanged(user => {
-
       db.collection("users").doc(user.email).collection('events').get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          //Puts data into event object
           this.events.push(doc.data())
         });
       });
@@ -125,7 +118,6 @@ export default {
     //Deletes event
     deleteEvent(name) {
       const user = firebase.auth().currentUser;
-
       var confirm = prompt("Are you sure you want to delete the event titled " + name + "? You will NOT be able to undo this action! Type 'YES' to confirm");
       if (confirm == "YES") {
         //Gets document ID to delete it
@@ -145,5 +137,4 @@ export default {
     }
   }
 }
-
 </script>

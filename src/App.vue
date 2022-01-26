@@ -24,7 +24,6 @@ export default {
         }
       });
     });
-    
   }  
 }
 
@@ -33,7 +32,7 @@ export default {
 <style>
 
 body {
-  background: #2c3e50;
+  background: #3a0747;
   color: white;
 }
 

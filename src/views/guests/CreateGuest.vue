@@ -36,8 +36,8 @@ export default {
         }
       });
     });
-
   },
+
   data() {
     return {
       firstname: '',
@@ -47,16 +47,15 @@ export default {
       guests: []
     }
   },
+
   created() {
     //Puts all current events in array
     firebase.auth().onAuthStateChanged(user => {
       db.collection("users").doc(user.email).collection('guests').get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
-          //Puts data into guest object
           this.guests.push(doc.data())
         });
       });
-      
     });
   },
 
@@ -86,18 +85,14 @@ export default {
 
         if(guestExists == false) {
           const user = firebase.auth().currentUser;
-
           db.collection('users').doc(user.email).collection('guests').add(guest);
           alert(guest.firstname + " " + guest.lastname + " has been added!")
           document.getElementById("newguest").reset();
         }
-
-
       } else {
         alert("Please fill out the form!")
       }
     }
   }
 }
-
 </script>
