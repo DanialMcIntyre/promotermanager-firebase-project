@@ -229,9 +229,12 @@ export default {
 
       //Adds user to event
       if(userExists == false) {
-        db.collection('users').doc(user.email).collection('events').doc(docID).collection('guests').add(guest);
-        alert(guest.firstname + " " + guest.lastname + " has been added to this event!");
-        this.closeSearchDropdown();
+        db.collection('users').doc(user.email).collection('events').doc(docID).collection('guests').add(guest).then(() => {
+          alert(guest.firstname + " " + guest.lastname + " has been added to this event!");
+          this.closeSearchDropdown();
+          window.location.reload();
+        });
+
       }
 
     },
@@ -287,6 +290,7 @@ export default {
           querySnapshot.forEach((doc) => {
             db.collection("users").doc(user.email).collection("events").doc(docID).collection('guests').doc(doc.id).delete().then(() => {
               alert("The guest " + firstname + " " + lastname + " has been deleted.");
+              window.location.reload();
             }).catch((error) => {
               console.error("Error removing document: ", error);
             });
@@ -296,7 +300,7 @@ export default {
       } else {
         alert("You have cancelled deletion");
       }
-  }
+    }
 
   }
 
