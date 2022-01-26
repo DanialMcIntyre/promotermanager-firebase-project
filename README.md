@@ -1,6 +1,6 @@
 # promotermanager
 
-##Prerequisite
+## Prerequisite
 Make sure you have node.js installed. Here's a website that will help you through the installation process. You may need to restart your computer after installation.
 https://phoenixnap.com/kb/install-node-js-npm-on-windows
 
